@@ -270,155 +270,124 @@
     // Atividades Java
     const atividadesJava = [
       {
-        titulo: '1. Classe Carro',
-        descricao: 'Crie uma classe Java chamada <code>Carro</code> com os atributos <code>marca</code> e <code>ano</code>. Implemente um construtor e um método <code>exibirInfo()</code> que imprime as informações do carro.',
-        regex: [/class\s+Carro/, /String\s+marca/, /int\s+ano/, /void\s+exibirInfo\s*\(/]
+        titulo: '1. Soma de dois números',
+        descricao: 'Implemente um método <code>somar</code> que recebe dois inteiros e retorna a soma.',
+        regex: [/int\s+somar\s*\(/, /return\s+.*\+/],
+        dica: 'O método deve receber dois parâmetros inteiros e retornar a soma usando o operador +. Exemplo: return a + b;'
       },
       {
-        titulo: '2. Classe Pessoa',
-        descricao: 'Implemente uma classe <code>Pessoa</code> com os atributos <code>nome</code> (String) e <code>idade</code> (int). Crie um método <code>fazerAniversario()</code> que aumenta a idade em 1.',
-        regex: [/class\s+Pessoa/, /String\s+nome/, /int\s+idade/, /void\s+fazerAniversario\s*\(/]
+        titulo: '2. Encontrar o maior valor em um array',
+        descricao: 'Implemente um método <code>maiorValor</code> que recebe um array de inteiros e retorna o maior valor.',
+        regex: [/int\s+maiorValor\s*\(/, /for|while/, /if\s*\(/, /return/],
+        dica: 'Percorra o array usando um laço (for ou while), compare cada elemento e retorne o maior valor encontrado.'
       },
       {
-        titulo: '3. Classe ContaBancaria',
-        descricao: 'Crie uma classe <code>ContaBancaria</code> com os atributos <code>titular</code> (String) e <code>saldo</code> (double). Implemente métodos <code>depositar()</code> e <code>sacar()</code>.',
-        regex: [/class\s+ContaBancaria/, /String\s+titular/, /double\s+saldo/, /void\s+depositar\s*\(/, /void\s+sacar\s*\(/]
+        titulo: '3. Contar vogais em uma String',
+        descricao: 'Crie um método <code>contarVogais</code> que recebe uma <code>String</code> e retorna o número de vogais.',
+        regex: [/int\s+contarVogais\s*\(/, /for|while/, /charAt|toCharArray/, /if.*[aeiou]/i],
+        dica: 'Percorra cada caractere da string, verifique se é uma vogal (a, e, i, o, u) e incremente um contador.'
       },
       {
-        titulo: '4. Classe Livro',
-        descricao: 'Implemente uma classe <code>Livro</code> com os atributos <code>titulo</code> e <code>autor</code>. Crie um método <code>exibirDetalhes()</code>.',
-        regex: [/class\s+Livro/, /String\s+titulo/, /String\s+autor/, /void\s+exibirDetalhes\s*\(/]
+        titulo: '4. Inverter uma lista de inteiros',
+        descricao: 'Implemente um método <code>inverterLista</code> que recebe uma <code>List<Integer></code> e retorna a lista invertida.',
+        regex: [/List<Integer>\s+inverterLista\s*\(/, /Collections\.reverse|for|add\(0,/],
+        dica: 'Você pode usar Collections.reverse(lista) ou criar uma nova lista e adicionar os elementos no início.'
       },
       {
-        titulo: '5. Classe Animal com Herança',
-        descricao: 'Crie uma classe <code>Animal</code> e uma subclasse <code>Cachorro</code> que herda de <code>Animal</code>.',
-        regex: [/class\s+Animal/, /class\s+Cachorro\s+extends\s+Animal/]
+        titulo: '5. Ler arquivo texto',
+        descricao: 'Crie um método que lê um arquivo texto e retorna seu conteúdo como <code>String</code>.',
+        regex: [/BufferedReader|Files\.readAllLines|Scanner/, /FileReader|Paths/],
+        dica: 'Utilize BufferedReader, Scanner ou Files.readAllLines para ler o conteúdo do arquivo.'
       },
       {
-        titulo: '6. Classe Produto com Encapsulamento',
-        descricao: 'Implemente uma classe <code>Produto</code> com atributos privados e métodos <code>get</code> e <code>set</code> para <code>preco</code>.',
-        regex: [/class\s+Produto/, /private\s+double\s+preco/, /getPreco\s*\(/, /setPreco\s*\(/]
+        titulo: '6. Tratar exceções',
+        descricao: 'Implemente um método que divide dois números e trata a exceção de divisão por zero.',
+        regex: [/try\s*\{/, /catch\s*\(ArithmeticException/],
+        dica: 'Envolva a divisão em um bloco try-catch e capture ArithmeticException para evitar erro de divisão por zero.'
       },
       {
-        titulo: '7. Classe Aluno com ArrayList',
-        descricao: 'Crie uma classe <code>Aluno</code> e armazene vários alunos em um <code>ArrayList</code>.',
-        regex: [/class\s+Aluno/, /ArrayList<Aluno>/]
+        titulo: '7. Usar lambda para filtrar lista',
+        descricao: 'Utilize expressão lambda para filtrar números pares de uma lista de inteiros.',
+        regex: [/stream\(\)/, /filter\(/, /lambda|->/],
+        dica: 'Use .stream().filter(n -> n % 2 == 0) para obter apenas os números pares.'
       },
       {
-        titulo: '8. Classe Retângulo com método calcularÁrea',
-        descricao: 'Implemente uma classe <code>Retangulo</code> com métodos para calcular área e perímetro.',
-        regex: [/class\s+Retangulo/, /double\s+calcularArea\s*\(/, /double\s+calcularPerimetro\s*\(/]
+        titulo: '8. Implementar interface',
+        descricao: 'Implemente a interface <code>Calculavel</code> com o método <code>calcular()</code>.',
+        regex: [/implements\s+Calculavel/, /public\s+double\s+calcular\s*\(/],
+        dica: 'Implemente todos os métodos da interface Calculavel, especialmente o calcular().' 
       },
       {
-        titulo: '9. Classe Funcionario com Polimorfismo',
-        descricao: 'Crie uma classe <code>Funcionario</code> e subclasses <code>Gerente</code> e <code>Vendedor</code> que sobrescrevem um método <code>calcularSalario()</code>.',
-        regex: [/class\s+Funcionario/, /class\s+Gerente\s+extends\s+Funcionario/, /class\s+Vendedor\s+extends\s+Funcionario/, /calcularSalario\s*\(/]
+        titulo: '9. Usar enum para dias da semana',
+        descricao: 'Crie um <code>enum</code> chamado <code>DiaSemana</code> com os dias da semana.',
+        regex: [/enum\s+DiaSemana/, /SEGUNDA|TERCA|QUARTA|QUINTA|SEXTA|SABADO|DOMINGO/],
+        dica: 'Enum é uma lista de constantes. Exemplo: enum DiaSemana { SEGUNDA, TERCA, ... }'
       },
       {
-        titulo: '10. Classe ContaCorrente com Sobrecarga',
-        descricao: 'Implemente uma classe <code>ContaCorrente</code> com métodos <code>depositar</code> sobrecarregados.',
-        regex: [/class\s+ContaCorrente/, /void\s+depositar\s*\(/]
-      },
-      // ... Adicione mais atividades até 30 ...
-      {
-        titulo: '11. Classe Veiculo com método abstrato',
-        descricao: 'Crie uma classe abstrata <code>Veiculo</code> com um método abstrato <code>mover()</code>.',
-        regex: [/abstract\s+class\s+Veiculo/, /abstract\s+void\s+mover\s*\(/]
+        titulo: '10. Teste unitário com JUnit',
+        descricao: 'Escreva um teste JUnit para o método <code>somar</code> que verifica se 2 + 3 = 5.',
+        regex: [/import\s+org\.junit/, /@Test/, /assertEquals\s*\(\s*5\s*,\s*.*somar/],
+        dica: 'Use @Test e assertEquals(5, somar(2, 3)) para validar o resultado.'
       },
       {
-        titulo: '12. Classe Triangulo com validação',
-        descricao: 'Implemente uma classe <code>Triangulo</code> que verifica se os lados formam um triângulo válido.',
-        regex: [/class\s+Triangulo/, /boolean\s+ehValido\s*\(/]
+        titulo: '11. Converter lista para mapa',
+        descricao: 'Implemente um método que converte uma <code>List&lt;String&gt;</code> em um <code>Map&lt;String, Integer&gt;</code> com o tamanho de cada string.',
+        regex: [/Map<String,\s*Integer>/, /for|stream/, /put|collect/],
+        dica: 'Percorra a lista e adicione cada string como chave e seu tamanho como valor no mapa.'
       },
       {
-        titulo: '13. Classe Agenda com array de contatos',
-        descricao: 'Crie uma classe <code>Agenda</code> que armazena contatos em um array.',
-        regex: [/class\s+Agenda/, /Contato\[\]/]
+        titulo: '12. Ordenar objetos por atributo',
+        descricao: 'Implemente a ordenação de uma lista de objetos <code>Aluno</code> pelo atributo <code>nome</code>.',
+        regex: [/Collections\.sort|stream\(\)\.sorted/, /Comparator|compareTo/],
+        dica: 'Implemente Comparable<Aluno> ou use Comparator.comparing(Aluno::getNome).'
       },
       {
-        titulo: '14. Classe Calculadora com métodos estáticos',
-        descricao: 'Implemente uma classe <code>Calculadora</code> com métodos estáticos para operações básicas.',
-        regex: [/class\s+Calculadora/, /static\s+int\s+soma\s*\(/]
+        titulo: '13. Serializar objeto para JSON',
+        descricao: 'Utilize uma biblioteca (ex: Gson ou Jackson) para converter um objeto em JSON.',
+        regex: [/Gson|ObjectMapper/, /toJson/],
+        dica: 'Use Gson().toJson(obj) ou ObjectMapper.writeValueAsString(obj).'
       },
       {
-        titulo: '15. Classe Pilha com métodos push e pop',
-        descricao: 'Crie uma classe <code>Pilha</code> com métodos <code>push</code> e <code>pop</code>.',
-        regex: [/class\s+Pilha/, /void\s+push\s*\(/, /void\s+pop\s*\(/]
+        titulo: '14. Buscar elemento em matriz',
+        descricao: 'Implemente um método que busca um valor em uma matriz de inteiros.',
+        regex: [/for|while/, /\[\]/, /return/],
+        dica: 'Use dois laços (um para linhas e outro para colunas) para percorrer a matriz.'
       },
       {
-        titulo: '16. Classe Fila com métodos enfileirar e desenfileirar',
-        descricao: 'Implemente uma classe <code>Fila</code> com métodos <code>enfileirar</code> e <code>desenfileirar</code>.',
-        regex: [/class\s+Fila/, /void\s+enfileirar\s*\(/, /void\s+desenfileirar\s*\(/]
+        titulo: '15. Calcular média de notas',
+        descricao: 'Crie um método que recebe um array de doubles e retorna a média.',
+        regex: [/double\s+media\s*\(/, /for|stream/, /return/],
+        dica: 'Some todos os valores do array e divida pelo total de elementos.'
       },
       {
-        titulo: '17. Classe Data com formatação',
-        descricao: 'Crie uma classe <code>Data</code> que formata datas no padrão brasileiro.',
-        regex: [/class\s+Data/, /String\s+formatarData\s*\(/]
+        titulo: '16. Validar CPF',
+        descricao: 'Implemente um método que valida um CPF (formato e dígitos).',
+        regex: [/String\s+cpf/, /return/, /if/],
+        dica: 'Verifique se o CPF tem 11 dígitos e se os dígitos verificadores estão corretos.'
       },
       {
-        titulo: '18. Classe Matriz com multiplicação',
-        descricao: 'Implemente uma classe <code>Matriz</code> com método para multiplicar matrizes.',
-        regex: [/class\s+Matriz/, /int\[\]\[\]/, /multiplicar\s*\(/]
+        titulo: '17. Gerar números aleatórios',
+        descricao: 'Crie um método que retorna uma lista com 10 números aleatórios entre 1 e 100.',
+        regex: [/Random|ThreadLocalRandom/, /for/, /add/],
+        dica: 'Use Random ou ThreadLocalRandom para gerar números e adicione-os em uma lista.'
       },
       {
-        titulo: '19. Classe Usuario com autenticação',
-        descricao: 'Crie uma classe <code>Usuario</code> com método <code>autenticar()</code>.',
-        regex: [/class\s+Usuario/, /boolean\s+autenticar\s*\(/]
+        titulo: '18. Remover duplicatas de lista',
+        descricao: 'Implemente um método que remove elementos duplicados de uma lista de inteiros.',
+        regex: [/Set|HashSet/, /addAll|stream\(\)\.distinct/],
+        dica: 'Converta a lista para um Set ou use .stream().distinct().' 
       },
       {
-        titulo: '20. Classe Pedido com lista de produtos',
-        descricao: 'Implemente uma classe <code>Pedido</code> que armazena uma lista de produtos.',
-        regex: [/class\s+Pedido/, /List<Produto>/]
+        titulo: '19. Calcular fatorial recursivo',
+        descricao: 'Implemente um método recursivo para calcular o fatorial de um número.',
+        regex: [/int\s+fatorial\s*\(/, /return/, /fatorial\s*\(/],
+        dica: 'O método deve chamar a si mesmo até chegar ao caso base (n == 0 ou n == 1).'
       },
       {
-        titulo: '21. Classe Sensor com leitura de dados',
-        descricao: 'Crie uma classe <code>Sensor</code> com método <code>lerDados()</code>.',
-        regex: [/class\s+Sensor/, /void\s+lerDados\s*\(/]
-      },
-      {
-        titulo: '22. Classe Cliente com endereço',
-        descricao: 'Implemente uma classe <code>Cliente</code> com um atributo <code>endereco</code> do tipo <code>Endereco</code>.',
-        regex: [/class\s+Cliente/, /Endereco\s+endereco/]
-      },
-      {
-        titulo: '23. Classe Empresa com funcionários',
-        descricao: 'Crie uma classe <code>Empresa</code> que armazena funcionários em um array.',
-        regex: [/class\s+Empresa/, /Funcionario\[\]/]
-      },
-      {
-        titulo: '24. Classe Musica com método tocar',
-        descricao: 'Implemente uma classe <code>Musica</code> com método <code>tocar()</code>.',
-        regex: [/class\s+Musica/, /void\s+tocar\s*\(/]
-      },
-      {
-        titulo: '25. Classe Video com método reproduzir',
-        descricao: 'Crie uma classe <code>Video</code> com método <code>reproduzir()</code>.',
-        regex: [/class\s+Video/, /void\s+reproduzir\s*\(/]
-      },
-      {
-        titulo: '26. Classe Professor com disciplina',
-        descricao: 'Implemente uma classe <code>Professor</code> com atributo <code>disciplina</code>.',
-        regex: [/class\s+Professor/, /String\s+disciplina/]
-      },
-      {
-        titulo: '27. Classe Turma com lista de alunos',
-        descricao: 'Crie uma classe <code>Turma</code> que armazena alunos em uma lista.',
-        regex: [/class\s+Turma/, /List<Aluno>/]
-      },
-      {
-        titulo: '28. Classe Nota com cálculo de média',
-        descricao: 'Implemente uma classe <code>Nota</code> com método para calcular média.',
-        regex: [/class\s+Nota/, /double\s+calcularMedia\s*\(/]
-      },
-      {
-        titulo: '29. Classe Endereco com CEP',
-        descricao: 'Crie uma classe <code>Endereco</code> com atributo <code>cep</code>.',
-        regex: [/class\s+Endereco/, /String\s+cep/]
-      },
-      {
-        titulo: '30. Classe Telefone com validação de número',
-        descricao: 'Implemente uma classe <code>Telefone</code> que valida o número informado.',
-        regex: [/class\s+Telefone/, /boolean\s+validarNumero\s*\(/]
+        titulo: '20. Verificar palíndromo',
+        descricao: 'Crie um método que verifica se uma string é palíndromo.',
+        regex: [/String/, /equals|==/, /reverse|charAt/],
+        dica: 'Compare a string original com ela invertida para saber se é palíndromo.'
       }
     ];
 
@@ -570,7 +539,7 @@
       if(correto) {
         feedback = '<span class="correto">Parabéns! Sua resposta está correta.</span>';
       } else {
-        feedback = '<span class="errado">Revise sua resposta de acordo com o enunciado e tente novamente.</span>';
+        feedback = `<span class='errado'>${lista[num-1].dica}</span>`;
       }
       document.getElementById('feedback'+prefix+num).innerHTML = feedback;
     }
