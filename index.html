@@ -225,6 +225,7 @@
     <button class="categoria" id="bdBtn">Banco de Dados</button>
     <button class="categoria" id="algBtn">Algoritmo</button>
     <button class="categoria" id="fisicaBtn">Física</button>
+    <button class="categoria" id="lerBtn">Aprendendo a Ler</button>
   </section>
 
   <!-- Modal Desenvolvimento -->
@@ -259,6 +260,14 @@
       <div id="atividadesFisica"></div>
     </div>
   </div>
+  <!-- Modal Aprendendo a Ler -->
+  <div class="modal-bg" id="modalLer">
+    <div class="modal">
+      <button class="close-btn" onclick="fecharModal('modalLer')">&times;</button>
+      <h2>Atividades Lúdicas: Aprendendo a Ler</h2>
+      <div id="atividadesLer"></div>
+    </div>
+  </div>
 
   <script>
     // Abrir modais
@@ -273,6 +282,9 @@
     };
     document.getElementById('fisicaBtn').onclick = function() {
       document.getElementById('modalFisica').style.display = 'flex';
+    };
+    document.getElementById('lerBtn').onclick = function() {
+      document.getElementById('modalLer').style.display = 'flex';
     };
     // Fechar modal
     function fecharModal(id) {
@@ -595,6 +607,80 @@
       }
     ];
 
+    // Atividades Aprendendo a Ler
+    const atividadesLer = [
+      {
+        titulo: '1. Identifique a Letra',
+        descricao: 'Qual letra está sendo mostrada na imagem abaixo?',
+        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Letter_A.svg/1200px-Letter_A.svg.png" alt="Letra A" style="width:80px;">',
+        regex: [/a/i],
+        dica: 'Esta é a letra A. Escreva a letra correspondente à imagem.'
+      },
+      {
+        titulo: '2. Ouça e Escreva',
+        descricao: 'Ouça o som e escreva a letra que você ouviu.',
+        midia: '<audio controls><source src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae5e2.mp3" type="audio/mpeg">Seu navegador não suporta áudio.</audio>',
+        regex: [/e/i],
+        dica: 'O som é da letra E. Escreva a letra que você ouviu.'
+      },
+      {
+        titulo: '3. Complete a Palavra',
+        descricao: 'Veja a imagem e complete a palavra: <b>C_SA</b>',
+        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Casa.jpg" alt="Casa" style="width:100px;">',
+        regex: [/a/i],
+        dica: 'A imagem é de uma casa. Complete com a letra A.'
+      },
+      {
+        titulo: '4. Jogo da Memória: Letras',
+        descricao: 'Clique no botão para jogar um mini game de memória com letras.',
+        midia: '<button onclick="abrirJogoMemoria()" class="verificar-btn">Jogar</button><div id="gameMemoria"></div>',
+        regex: [/ok/i],
+        dica: 'Após jogar, digite OK para marcar como concluído.'
+      },
+      {
+        titulo: '5. Vídeo: Aprendendo as Vogais',
+        descricao: 'Assista ao vídeo e escreva o nome de uma vogal que você aprendeu.',
+        midia: '<iframe width="220" height="124" src="https://www.youtube.com/embed/1a1cKQH2Y6I" title="Vogais" frameborder="0" allowfullscreen></iframe>',
+        regex: [/a|e|i|o|u/i],
+        dica: 'Digite uma das vogais: A, E, I, O ou U.'
+      },
+      {
+        titulo: '6. Associe Imagem e Palavra',
+        descricao: 'Qual palavra corresponde à imagem abaixo?',
+        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Banana.png" alt="Banana" style="width:100px;">',
+        regex: [/banana/i],
+        dica: 'A imagem é de uma banana. Escreva a palavra correta.'
+      },
+      {
+        titulo: '7. Forme a Palavra',
+        descricao: 'Arraste as letras para formar a palavra da imagem (simulação, digite a palavra formada).',
+        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Bola.png" alt="Bola" style="width:80px;">',
+        regex: [/bola/i],
+        dica: 'A imagem é de uma bola. Forme a palavra BOLA.'
+      },
+      {
+        titulo: '8. Rima Divertida',
+        descricao: 'Qual palavra rima com "pato"? (Dica: animal que mia)',
+        midia: '',
+        regex: [/gato/i],
+        dica: 'A palavra que rima com pato e é um animal que mia é GATO.'
+      },
+      {
+        titulo: '9. Complete a frase',
+        descricao: 'Complete: "O sol é ___." (cor amarela)',
+        midia: '',
+        regex: [/amarelo|amarela/i],
+        dica: 'O sol é amarelo.'
+      },
+      {
+        titulo: '10. Jogo: Clique na vogal',
+        descricao: 'Clique no botão para jogar um mini game de clicar nas vogais (simulação, digite a vogal que aparecer).',
+        midia: '<button onclick="abrirJogoVogal()" class="verificar-btn">Jogar</button><div id="gameVogal"></div>',
+        regex: [/a|e|i|o|u/i],
+        dica: 'Digite a vogal que aparecer no mini game.'
+      }
+    ];
+
     // Renderização dinâmica das atividades
     function renderAtividades(lista, containerId, tipo) {
       const container = document.getElementById(containerId);
@@ -622,6 +708,7 @@
     renderAtividades(atividadesBD, 'atividadesBD', 'BD');
     renderAtividades(atividadesAlg, 'atividadesAlg', 'Alg');
     renderAtividades(atividadesFisica, 'atividadesFisica', 'Fisica');
+    renderAtividades(atividadesLer, 'atividadesLer', 'Ler');
 
     // Verificação de código
     function verificarCodigo(tipo, num) {
@@ -629,7 +716,8 @@
       if(tipo === 'Java') { lista = atividadesJava; prefix = 'Java'; }
       else if(tipo === 'BD') { lista = atividadesBD; prefix = 'BD'; }
       else if(tipo === 'Alg') { lista = atividadesAlg; prefix = 'Alg'; }
-      else { lista = atividadesFisica; prefix = 'Fisica'; }
+      else if(tipo === 'Fisica') { lista = atividadesFisica; prefix = 'Fisica'; }
+      else { lista = atividadesLer; prefix = 'Ler'; }
       const codigo = document.getElementById('codigo'+prefix+num).value;
       let feedback = '';
       let correto = true;
@@ -645,6 +733,16 @@
     // Expansão/colapso das atividades (accordion)
     function toggleAtividade(atividadeDiv) {
       atividadeDiv.classList.toggle('expanded');
+    }
+
+    // Jogos simples para atividades lúdicas
+    function abrirJogoMemoria() {
+      document.getElementById('gameMemoria').innerHTML = '<span style="color:#4f8cff;font-weight:bold;">Parabéns! Você encontrou todos os pares de letras!</span>';
+    }
+    function abrirJogoVogal() {
+      const vogais = ['A','E','I','O','U'];
+      const sorteada = vogais[Math.floor(Math.random()*vogais.length)];
+      document.getElementById('gameVogal').innerHTML = `<span style='color:#4f8cff;font-weight:bold;'>Cliquei na vogal: <b>${sorteada}</b></span>`;
     }
   </script>
 </body>
