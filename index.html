@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Didático Interativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #4f8cff 0%, #a6ffcb 100%);
+      min-height: 100vh;
+      color: #222;
+    }
+    header {
+      background: rgba(255,255,255,0.9);
+      padding: 2rem 0 1rem 0;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #2d3a4b;
+    }
+    .categorias {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+    .categoria {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      padding: 2rem 3rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #4f8cff;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      outline: none;
+    }
+    .categoria:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(79,140,255,0.15);
+      background: #eaf6ff;
+    }
+    /* Modal */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90vw;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      position: relative;
+      animation: modalIn 0.3s;
+    }
+    @keyframes modalIn {
+      from { transform: translateY(-40px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+    }
+    .atividade {
+      margin-bottom: 2rem;
+    }
+    .atividade h3 {
+      margin-top: 0;
+      color: #4f8cff;
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      border-radius: 0.5rem;
+      border: 1px solid #b3c6ff;
+      padding: 1rem;
+      font-family: 'Fira Mono', 'Consolas', monospace;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      resize: vertical;
+    }
+    .verificar-btn {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .verificar-btn:hover {
+      background: #3570d4;
+    }
+    .feedback {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .feedback.correto {
+      color: #2ecc40;
+    }
+    .feedback.errado {
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Didático Interativo</h1>
+    <p>Aprenda brincando! Escolha uma categoria para começar:</p>
+  </header>
+  <section class="categorias">
+    <button class="categoria" id="devBtn">Desenvolvimento</button>
+    <!-- Outras categorias futuramente -->
+  </section>
+
+  <!-- Modal Desenvolvimento -->
+  <div class="modal-bg" id="modalDev">
+    <div class="modal">
+      <button class="close-btn" onclick="fecharModal('modalDev')">&times;</button>
+      <h2>Atividades de Programação Orientada a Objetos em Java</h2>
+      <div class="atividade" id="atividade1">
+        <h3>1. Crie uma classe Java chamada <code>Carro</code> com os atributos <code>marca</code> e <code>ano</code>. Implemente um construtor e um método <code>exibirInfo()</code> que imprime as informações do carro.</h3>
+        <textarea id="codigo1" placeholder="Digite seu código Java aqui..."></textarea>
+        <button class="verificar-btn" onclick="verificarCodigo(1)">Verificar</button>
+        <div class="feedback" id="feedback1"></div>
+      </div>
+      <!-- Outras atividades podem ser adicionadas aqui -->
+    </div>
+  </div>
+
+  <script>
+    // Abrir modal Desenvolvimento
+    document.getElementById('devBtn').onclick = function() {
+      document.getElementById('modalDev').style.display = 'flex';
+    };
+    // Fechar modal
+    function fecharModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    // Verificação simples de código Java (exemplo didático)
+    function verificarCodigo(num) {
+      const codigo = document.getElementById('codigo'+num).value;
+      let feedback = '';
+      let correto = false;
+      // Lógica simplificada para exemplo
+      if(num === 1) {
+        if(/class\s+Carro/.test(codigo) && /String\s+marca/.test(codigo) && /int\s+ano/.test(codigo) && /void\s+exibirInfo\s*\(/.test(codigo)) {
+          correto = true;
+        }
+        if(correto) {
+          feedback = '<span class="correto">Parabéns! Sua estrutura está correta.</span>';
+        } else {
+          feedback = '<span class="errado">Revise: Certifique-se de criar a classe <code>Carro</code> com os atributos <code>marca</code> (String), <code>ano</code> (int), um construtor e o método <code>exibirInfo()</code>.</span>';
+        }
+      }
+      document.getElementById('feedback'+num).innerHTML = feedback;
+    }
+  </script>
+</body>
+</html>
