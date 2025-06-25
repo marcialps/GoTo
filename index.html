@@ -396,52 +396,62 @@
       {
         titulo: '1. Criação de Tabela',
         descricao: 'Escreva um comando SQL para criar uma tabela <code>Clientes</code> com os campos <code>id</code> (inteiro, chave primária), <code>nome</code> (texto) e <code>email</code> (texto).',
-        regex: [/CREATE\s+TABLE/i, /Clientes/i, /id\s+INT/i, /PRIMARY\s+KEY/i, /nome\s+TEXT/i, /email\s+TEXT/i]
+        regex: [/CREATE\s+TABLE/i, /Clientes/i, /id\s+INT/i, /PRIMARY\s+KEY/i, /nome\s+TEXT/i, /email\s+TEXT/i],
+        dica: 'Use CREATE TABLE Clientes (id INT PRIMARY KEY, nome TEXT, email TEXT); Certifique-se de definir o id como chave primária.'
       },
       {
         titulo: '2. Inserção de Dados',
         descricao: 'Insira um cliente chamado "João" com email "joao@email.com" na tabela <code>Clientes</code>.',
-        regex: [/INSERT\s+INTO/i, /Clientes/i, /João/i, /joao@email.com/i]
+        regex: [/INSERT\s+INTO/i, /Clientes/i, /João/i, /joao@email.com/i],
+        dica: 'Use INSERT INTO Clientes (nome, email) VALUES ("João", "joao@email.com"); Lembre-se de usar os valores corretos.'
       },
       {
         titulo: '3. Consulta Simples',
         descricao: 'Escreva um comando SQL para selecionar todos os clientes da tabela <code>Clientes</code>.',
-        regex: [/SELECT\s+\*/i, /FROM\s+Clientes/i]
+        regex: [/SELECT\s+\*/i, /FROM\s+Clientes/i],
+        dica: 'Use SELECT * FROM Clientes; para buscar todos os registros.'
       },
       {
         titulo: '4. Atualização de Dados',
         descricao: 'Atualize o email do cliente com <code>id = 1</code> para "novo@email.com".',
-        regex: [/UPDATE/i, /Clientes/i, /SET/i, /email/i, /WHERE/i, /id\s*=\s*1/i]
+        regex: [/UPDATE/i, /Clientes/i, /SET/i, /email/i, /WHERE/i, /id\s*=\s*1/i],
+        dica: 'Use UPDATE Clientes SET email = "novo@email.com" WHERE id = 1; Atenção ao uso do WHERE.'
       },
       {
         titulo: '5. Exclusão de Dados',
         descricao: 'Remova o cliente com <code>id = 1</code> da tabela <code>Clientes</code>.',
-        regex: [/DELETE\s+FROM/i, /Clientes/i, /WHERE/i, /id\s*=\s*1/i]
+        regex: [/DELETE\s+FROM/i, /Clientes/i, /WHERE/i, /id\s*=\s*1/i],
+        dica: 'Use DELETE FROM Clientes WHERE id = 1; Não esqueça do WHERE para evitar apagar todos os registros.'
       },
       {
         titulo: '6. Chave Estrangeira',
         descricao: 'Adicione uma chave estrangeira <code>cliente_id</code> na tabela <code>Pedidos</code> referenciando <code>Clientes(id)</code>.',
-        regex: [/FOREIGN\s+KEY/i, /cliente_id/i, /REFERENCES/i, /Clientes\s*\(id\)/i]
+        regex: [/FOREIGN\s+KEY/i, /cliente_id/i, /REFERENCES/i, /Clientes\s*\(id\)/i],
+        dica: 'Use FOREIGN KEY (cliente_id) REFERENCES Clientes(id); para criar o relacionamento.'
       },
       {
         titulo: '7. Consulta com JOIN',
         descricao: 'Escreva um comando SQL para listar todos os pedidos com o nome do cliente.',
-        regex: [/SELECT/i, /JOIN/i, /Pedidos/i, /Clientes/i]
+        regex: [/SELECT/i, /JOIN/i, /Pedidos/i, /Clientes/i],
+        dica: 'Use SELECT ... FROM Pedidos JOIN Clientes ON ... para unir as tabelas e trazer o nome do cliente.'
       },
       {
         titulo: '8. Agrupamento de Dados',
         descricao: 'Liste a quantidade de pedidos por cliente.',
-        regex: [/SELECT/i, /COUNT/i, /GROUP\s+BY/i]
+        regex: [/SELECT/i, /COUNT/i, /GROUP\s+BY/i],
+        dica: 'Use SELECT cliente_id, COUNT(*) FROM Pedidos GROUP BY cliente_id; para agrupar os resultados.'
       },
       {
         titulo: '9. Consulta com WHERE',
         descricao: 'Selecione todos os clientes cujo nome começa com "A".',
-        regex: [/SELECT/i, /FROM/i, /Clientes/i, /WHERE/i, /nome/i, /LIKE/i]
+        regex: [/SELECT/i, /FROM/i, /Clientes/i, /WHERE/i, /nome/i, /LIKE/i],
+        dica: 'Use WHERE nome LIKE "A%" para filtrar nomes que começam com A.'
       },
       {
         titulo: '10. Criação de View',
         descricao: 'Crie uma <code>VIEW</code> chamada <code>ClientesAtivos</code> que mostra apenas clientes com pedidos.',
-        regex: [/CREATE\s+VIEW/i, /ClientesAtivos/i]
+        regex: [/CREATE\s+VIEW/i, /ClientesAtivos/i],
+        dica: 'Use CREATE VIEW ClientesAtivos AS SELECT ... para criar uma visão filtrada.'
       }
     ];
 
@@ -450,52 +460,62 @@
       {
         titulo: '1. Soma de dois números',
         descricao: 'Escreva um algoritmo em Portugol Studio que leia dois números e exiba a soma.',
-        regex: [/leia/i, /escreva/i, /\+/]
+        regex: [/leia/i, /escreva/i, /\+/],
+        dica: 'Use leia para receber os números e escreva para mostrar a soma. Exemplo: escreva(a + b);'
       },
       {
         titulo: '2. Verificação de número par',
         descricao: 'Crie um algoritmo que leia um número e informe se ele é par ou ímpar.',
-        regex: [/leia/i, /mod/i, /se/i, /entao/i]
+        regex: [/leia/i, /mod/i, /se/i, /entao/i],
+        dica: 'Use o operador mod para verificar se o número é divisível por 2. Exemplo: se (n mod 2 = 0) então ...'
       },
       {
         titulo: '3. Fatorial de um número',
         descricao: 'Implemente um algoritmo que calcule o fatorial de um número informado.',
-        regex: [/leia/i, /para/i, /fatorial/i]
+        regex: [/leia/i, /para/i, /fatorial/i],
+        dica: 'Use um laço para multiplicar os valores de 1 até o número informado.'
       },
       {
         titulo: '4. Média de notas',
         descricao: 'Escreva um algoritmo que leia 3 notas e calcule a média.',
-        regex: [/leia/i, /media/i, /escreva/i]
+        regex: [/leia/i, /media/i, /escreva/i],
+        dica: 'Some as notas e divida por 3 para obter a média. Use escreva para mostrar o resultado.'
       },
       {
         titulo: '5. Tabuada',
         descricao: 'Crie um algoritmo que exiba a tabuada de um número.',
-        regex: [/leia/i, /para/i, /escreva/i]
+        regex: [/leia/i, /para/i, /escreva/i],
+        dica: 'Use um laço para multiplicar o número de 1 a 10 e escreva cada resultado.'
       },
       {
         titulo: '6. Maior de dois números',
         descricao: 'Implemente um algoritmo que leia dois números e mostre o maior.',
-        regex: [/leia/i, /se/i, /escreva/i]
+        regex: [/leia/i, /se/i, /escreva/i],
+        dica: 'Use a estrutura se ... então ... senão ... para comparar os dois números.'
       },
       {
         titulo: '7. Contagem regressiva',
         descricao: 'Escreva um algoritmo que faça uma contagem regressiva de 10 até 1.',
-        regex: [/para/i, /de/i, /ate/i, /passo/i]
+        regex: [/para/i, /de/i, /ate/i, /passo/i],
+        dica: 'Use para de 10 até 1 passo -1 para fazer a contagem regressiva.'
       },
       {
         titulo: '8. Verificação de idade',
         descricao: 'Crie um algoritmo que leia a idade e informe se é maior de idade.',
-        regex: [/leia/i, /se/i, /escreva/i]
+        regex: [/leia/i, /se/i, /escreva/i],
+        dica: 'Se a idade for maior ou igual a 18, escreva que é maior de idade, senão escreva que é menor.'
       },
       {
         titulo: '9. Soma dos elementos de um vetor',
         descricao: 'Implemente um algoritmo que leia 5 números em um vetor e calcule a soma.',
-        regex: [/vetor/i, /leia/i, /para/i, /soma/i]
+        regex: [/vetor/i, /leia/i, /para/i, /soma/i],
+        dica: 'Use um vetor para armazenar os números e um laço para somar todos eles.'
       },
       {
         titulo: '10. Cálculo de IMC',
         descricao: 'Escreva um algoritmo que leia peso e altura e calcule o IMC.',
-        regex: [/leia/i, /imc/i, /escreva/i]
+        regex: [/leia/i, /imc/i, /escreva/i],
+        dica: 'IMC = peso / (altura * altura). Mostre o resultado usando escreva.'
       }
     ];
 
