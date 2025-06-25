@@ -8,68 +8,101 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
       background: linear-gradient(135deg, #4f8cff 0%, #a6ffcb 100%);
       min-height: 100vh;
       color: #222;
+      transition: background 0.5s;
     }
     header {
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.95);
       padding: 2rem 0 1rem 0;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-bottom: 3px solid #4f8cff;
+      animation: headerIn 0.7s;
+    }
+    @keyframes headerIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     header h1 {
       margin: 0;
-      font-size: 2.5rem;
-      font-weight: 700;
+      font-size: 2.7rem;
+      font-weight: 900;
       letter-spacing: 2px;
       color: #2d3a4b;
+      text-shadow: 0 2px 8px #a6ffcb44;
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #4f8cff;
+      margin-top: 0.5rem;
     }
     .categorias {
       display: flex;
       justify-content: center;
       gap: 2rem;
-      margin: 3rem 0;
+      margin: 3rem 0 2rem 0;
       flex-wrap: wrap;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     .categoria {
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      background: linear-gradient(120deg, #4f8cff 60%, #a6ffcb 100%);
+      border-radius: 1.2rem;
+      box-shadow: 0 4px 24px rgba(79,140,255,0.13);
       padding: 2rem 3rem;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #4f8cff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
       border: none;
       outline: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .categoria:after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.07);
+      border-radius: 1.2rem;
+      pointer-events: none;
+      transition: background 0.3s;
     }
     .categoria:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 32px rgba(79,140,255,0.15);
-      background: #eaf6ff;
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 32px rgba(79,140,255,0.22);
+      background: linear-gradient(120deg, #a6ffcb 0%, #4f8cff 100%);
     }
     /* Modal */
     .modal-bg {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.5);
       z-index: 1000;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
+      padding-top: 3vh;
+      overflow-y: auto;
+      animation: fadeIn 0.3s;
     }
     .modal {
       background: #fff;
-      border-radius: 1rem;
-      padding: 2rem;
-      max-width: 600px;
-      width: 90vw;
+      border-radius: 1.2rem;
+      padding: 2rem 1.2rem 2.5rem 1.2rem;
+      max-width: 700px;
+      width: 95vw;
       box-shadow: 0 8px 32px rgba(0,0,0,0.18);
       position: relative;
-      animation: modalIn 0.3s;
+      animation: modalIn 0.4s;
+      margin-bottom: 3rem;
     }
     @keyframes modalIn {
       from { transform: translateY(-40px) scale(0.95); opacity: 0; }
@@ -81,20 +114,58 @@
       right: 1rem;
       background: none;
       border: none;
-      font-size: 1.5rem;
-      color: #888;
+      font-size: 2rem;
+      color: #4f8cff;
       cursor: pointer;
+      transition: color 0.2s;
+    }
+    .close-btn:hover {
+      color: #e74c3c;
     }
     .atividade {
-      margin-bottom: 2rem;
+      margin-bottom: 1.2rem;
+      border-radius: 0.7rem;
+      box-shadow: 0 2px 8px #4f8cff11;
+      background: #f8fcff;
+      overflow: hidden;
+      transition: box-shadow 0.2s, background 0.2s;
+      margin-top: 1.2rem;
     }
-    .atividade h3 {
-      margin-top: 0;
-      color: #4f8cff;
+    .atividade-header {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 1.1rem 1.2rem;
+      background: linear-gradient(90deg, #4f8cff22 0%, #a6ffcb22 100%);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #2d3a4b;
+      border: none;
+      outline: none;
+      transition: background 0.2s;
+    }
+    .atividade-header:hover {
+      background: linear-gradient(90deg, #a6ffcb44 0%, #4f8cff44 100%);
+    }
+    .atividade-header .seta {
+      margin-right: 1rem;
+      font-size: 1.3rem;
+      transition: transform 0.3s;
+    }
+    .atividade-content {
+      display: none;
+      padding: 1.2rem;
+      animation: fadeIn 0.4s;
+    }
+    .atividade.expanded .atividade-content {
+      display: block;
+    }
+    .atividade.expanded .atividade-header .seta {
+      transform: rotate(90deg);
     }
     textarea {
       width: 100%;
-      min-height: 120px;
+      min-height: 100px;
       border-radius: 0.5rem;
       border: 1px solid #b3c6ff;
       padding: 1rem;
@@ -102,31 +173,45 @@
       font-size: 1rem;
       margin-bottom: 1rem;
       resize: vertical;
+      background: #f4faff;
+      transition: border 0.2s;
+    }
+    textarea:focus {
+      border: 1.5px solid #4f8cff;
+      outline: none;
     }
     .verificar-btn {
-      background: #4f8cff;
+      background: linear-gradient(90deg, #4f8cff 60%, #a6ffcb 100%);
       color: #fff;
       border: none;
       border-radius: 0.5rem;
       padding: 0.7rem 1.5rem;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px #4f8cff22;
     }
     .verificar-btn:hover {
-      background: #3570d4;
+      background: linear-gradient(90deg, #a6ffcb 0%, #4f8cff 100%);
+      color: #222;
     }
     .feedback {
       margin-top: 0.5rem;
       font-size: 1rem;
       font-weight: 500;
+      min-height: 1.2em;
     }
     .feedback.correto {
       color: #2ecc40;
     }
     .feedback.errado {
       color: #e74c3c;
+    }
+    @media (max-width: 700px) {
+      .modal { padding: 1rem 0.2rem 1.5rem 0.2rem; }
+      .categoria { padding: 1.2rem 1.2rem; font-size: 1.1rem; }
+      header h1 { font-size: 2rem; }
     }
   </style>
 </head>
@@ -454,11 +539,15 @@
         const atividadeDiv = document.createElement('div');
         atividadeDiv.className = 'atividade';
         atividadeDiv.innerHTML = `
-          <h3>${num}. ${atv.titulo}</h3>
-          <p>${atv.descricao}</p>
-          <textarea id="codigo${tipo}${num}" placeholder="Digite sua resposta..."></textarea>
-          <button class="verificar-btn" onclick="verificarCodigo('${tipo}', ${num})">Verificar</button>
-          <div class="feedback" id="feedback${tipo}${num}"></div>
+          <div class="atividade-header" onclick="toggleAtividade(this.parentNode)">
+            <span class="seta">▶</span> ${num}. ${atv.titulo}
+          </div>
+          <div class="atividade-content">
+            <p>${atv.descricao}</p>
+            <textarea id="codigo${tipo}${num}" placeholder="Digite sua resposta..."></textarea>
+            <button class="verificar-btn" onclick="verificarCodigo('${tipo}', ${num})">Verificar</button>
+            <div class="feedback" id="feedback${tipo}${num}"></div>
+          </div>
         `;
         container.appendChild(atividadeDiv);
       });
@@ -484,6 +573,11 @@
         feedback = '<span class="errado">Revise sua resposta de acordo com o enunciado e tente novamente.</span>';
       }
       document.getElementById('feedback'+prefix+num).innerHTML = feedback;
+    }
+
+    // Expansão/colapso das atividades (accordion)
+    function toggleAtividade(atividadeDiv) {
+      atividadeDiv.classList.toggle('expanded');
     }
   </script>
 </body>
