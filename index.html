@@ -224,6 +224,7 @@
     <button class="categoria" id="devBtn">Desenvolvimento</button>
     <button class="categoria" id="bdBtn">Banco de Dados</button>
     <button class="categoria" id="algBtn">Algoritmo</button>
+    <button class="categoria" id="fisicaBtn">Física</button>
   </section>
 
   <!-- Modal Desenvolvimento -->
@@ -250,6 +251,14 @@
       <div id="atividadesAlg"></div>
     </div>
   </div>
+  <!-- Modal Física -->
+  <div class="modal-bg" id="modalFisica">
+    <div class="modal">
+      <button class="close-btn" onclick="fecharModal('modalFisica')">&times;</button>
+      <h2>Atividades de Física (1º ano do Ensino Médio)</h2>
+      <div id="atividadesFisica"></div>
+    </div>
+  </div>
 
   <script>
     // Abrir modais
@@ -261,6 +270,9 @@
     };
     document.getElementById('algBtn').onclick = function() {
       document.getElementById('modalAlg').style.display = 'flex';
+    };
+    document.getElementById('fisicaBtn').onclick = function() {
+      document.getElementById('modalFisica').style.display = 'flex';
     };
     // Fechar modal
     function fecharModal(id) {
@@ -519,6 +531,70 @@
       }
     ];
 
+    // Atividades Física
+    const atividadesFisica = [
+      {
+        titulo: '1. Velocidade Média',
+        descricao: 'Calcule a velocidade média de um corpo que percorre 150 metros em 30 segundos.',
+        regex: [/velocidade.*=/i, /150/i, /30/i, /5/],
+        dica: 'A velocidade média é calculada por Vm = ΔS/Δt. Divida 150 por 30 para encontrar o resultado.'
+      },
+      {
+        titulo: '2. Conversão de Unidades',
+        descricao: 'Converta 72 km/h para m/s.',
+        regex: [/72/i, /3,?6/i, /20/],
+        dica: 'Para converter km/h para m/s, divida por 3,6. 72 / 3,6 = 20 m/s.'
+      },
+      {
+        titulo: '3. Movimento Retilíneo Uniforme (MRU)',
+        descricao: 'Escreva a equação horária do espaço para um corpo que parte do repouso com velocidade de 10 m/s.',
+        regex: [/S\s*=\s*S0\s*\+\s*V\s*\.\s*t/i, /10/i],
+        dica: 'A equação é S = S0 + V·t. Como parte do repouso, S0 pode ser 0 e V = 10 m/s.'
+      },
+      {
+        titulo: '4. Força Peso',
+        descricao: 'Calcule o peso de um corpo de 50 kg na Terra (g = 10 m/s²).',
+        regex: [/peso.*=/i, /50/i, /10/i, /500/],
+        dica: 'Peso = massa × gravidade. 50 × 10 = 500 N.'
+      },
+      {
+        titulo: '5. Primeira Lei de Newton',
+        descricao: 'Explique a Primeira Lei de Newton com suas palavras.',
+        regex: [/inércia/i, /repouso|movimento/i],
+        dica: 'A Primeira Lei de Newton é a Lei da Inércia: um corpo tende a permanecer em repouso ou em movimento retilíneo uniforme, a menos que uma força atue sobre ele.'
+      },
+      {
+        titulo: '6. Trabalho de uma força',
+        descricao: 'Calcule o trabalho realizado por uma força de 20 N que desloca um objeto por 3 metros na mesma direção.',
+        regex: [/trabalho.*=/i, /20/i, /3/i, /60/],
+        dica: 'Trabalho = força × deslocamento. 20 × 3 = 60 J.'
+      },
+      {
+        titulo: '7. Energia Cinética',
+        descricao: 'Calcule a energia cinética de um corpo de 2 kg a 5 m/s.',
+        regex: [/energia.*cinética.*=/i, /2/i, /5/i, /25/],
+        dica: 'Ec = (m·v²)/2. 2 × 25 / 2 = 25 J.'
+      },
+      {
+        titulo: '8. Diferença entre massa e peso',
+        descricao: 'Explique a diferença entre massa e peso.',
+        regex: [/massa/i, /peso/i, /gravidade/i],
+        dica: 'Massa é a quantidade de matéria de um corpo (não muda com o local). Peso é a força com que a gravidade atrai o corpo.'
+      },
+      {
+        titulo: '9. Densidade',
+        descricao: 'Calcule a densidade de um corpo de 200 g e volume de 50 cm³.',
+        regex: [/densidade.*=/i, /200/i, /50/i, /4/],
+        dica: 'Densidade = massa/volume. 200/50 = 4 g/cm³.'
+      },
+      {
+        titulo: '10. Pressão',
+        descricao: 'Calcule a pressão exercida por uma força de 100 N sobre uma área de 2 m².',
+        regex: [/pressão.*=/i, /100/i, /2/i, /50/],
+        dica: 'Pressão = força/área. 100/2 = 50 Pa.'
+      }
+    ];
+
     // Renderização dinâmica das atividades
     function renderAtividades(lista, containerId, tipo) {
       const container = document.getElementById(containerId);
@@ -545,13 +621,15 @@
     renderAtividades(atividadesJava, 'atividadesJava', 'Java');
     renderAtividades(atividadesBD, 'atividadesBD', 'BD');
     renderAtividades(atividadesAlg, 'atividadesAlg', 'Alg');
+    renderAtividades(atividadesFisica, 'atividadesFisica', 'Fisica');
 
     // Verificação de código
     function verificarCodigo(tipo, num) {
       let lista, prefix;
       if(tipo === 'Java') { lista = atividadesJava; prefix = 'Java'; }
       else if(tipo === 'BD') { lista = atividadesBD; prefix = 'BD'; }
-      else { lista = atividadesAlg; prefix = 'Alg'; }
+      else if(tipo === 'Alg') { lista = atividadesAlg; prefix = 'Alg'; }
+      else { lista = atividadesFisica; prefix = 'Fisica'; }
       const codigo = document.getElementById('codigo'+prefix+num).value;
       let feedback = '';
       let correto = true;
