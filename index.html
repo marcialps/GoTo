@@ -1,749 +1,460 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Didático Interativo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #4f8cff 0%, #a6ffcb 100%);
-      min-height: 100vh;
-      color: #222;
-      transition: background 0.5s;
-    }
-    header {
-      background: rgba(255,255,255,0.95);
-      padding: 2rem 0 1rem 0;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      border-bottom: 3px solid #4f8cff;
-      animation: headerIn 0.7s;
-    }
-    @keyframes headerIn {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.7rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      color: #2d3a4b;
-      text-shadow: 0 2px 8px #a6ffcb44;
-    }
-    header p {
-      font-size: 1.2rem;
-      color: #4f8cff;
-      margin-top: 0.5rem;
-    }
-    .categorias {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 3rem 0 2rem 0;
-      flex-wrap: wrap;
-      animation: fadeIn 1s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .categoria {
-      background: linear-gradient(120deg, #4f8cff 60%, #a6ffcb 100%);
-      border-radius: 1.2rem;
-      box-shadow: 0 4px 24px rgba(79,140,255,0.13);
-      padding: 2rem 3rem;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .categoria:after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(255,255,255,0.07);
-      border-radius: 1.2rem;
-      pointer-events: none;
-      transition: background 0.3s;
-    }
-    .categoria:hover {
-      transform: scale(1.07) rotate(-2deg);
-      box-shadow: 0 8px 32px rgba(79,140,255,0.22);
-      background: linear-gradient(120deg, #a6ffcb 0%, #4f8cff 100%);
-    }
-    /* Modal */
-    .modal-bg {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 3vh;
-      overflow-y: auto;
-      animation: fadeIn 0.3s;
-    }
-    .modal {
-      background: #fff;
-      border-radius: 1.2rem;
-      padding: 2rem 1.2rem 2.5rem 1.2rem;
-      max-width: 700px;
-      width: 95vw;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-      position: relative;
-      animation: modalIn 0.4s;
-      margin-bottom: 3rem;
-    }
-    @keyframes modalIn {
-      from { transform: translateY(-40px) scale(0.95); opacity: 0; }
-      to { transform: translateY(0) scale(1); opacity: 1; }
-    }
-    .close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      font-size: 2rem;
-      color: #4f8cff;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .close-btn:hover {
-      color: #e74c3c;
-    }
-    .atividade {
-      margin-bottom: 1.2rem;
-      border-radius: 0.7rem;
-      box-shadow: 0 2px 8px #4f8cff11;
-      background: #f8fcff;
-      overflow: hidden;
-      transition: box-shadow 0.2s, background 0.2s;
-      margin-top: 1.2rem;
-    }
-    .atividade-header {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      padding: 1.1rem 1.2rem;
-      background: linear-gradient(90deg, #4f8cff22 0%, #a6ffcb22 100%);
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #2d3a4b;
-      border: none;
-      outline: none;
-      transition: background 0.2s;
-    }
-    .atividade-header:hover {
-      background: linear-gradient(90deg, #a6ffcb44 0%, #4f8cff44 100%);
-    }
-    .atividade-header .seta {
-      margin-right: 1rem;
-      font-size: 1.3rem;
-      transition: transform 0.3s;
-    }
-    .atividade-content {
-      display: none;
-      padding: 1.2rem;
-      animation: fadeIn 0.4s;
-    }
-    .atividade.expanded .atividade-content {
-      display: block;
-    }
-    .atividade.expanded .atividade-header .seta {
-      transform: rotate(90deg);
-    }
-    textarea {
-      width: 100%;
-      min-height: 100px;
-      border-radius: 0.5rem;
-      border: 1px solid #b3c6ff;
-      padding: 1rem;
-      font-family: 'Fira Mono', 'Consolas', monospace;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      resize: vertical;
-      background: #f4faff;
-      transition: border 0.2s;
-    }
-    textarea:focus {
-      border: 1.5px solid #4f8cff;
-      outline: none;
-    }
-    .verificar-btn {
-      background: linear-gradient(90deg, #4f8cff 60%, #a6ffcb 100%);
-      color: #fff;
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 8px #4f8cff22;
-    }
-    .verificar-btn:hover {
-      background: linear-gradient(90deg, #a6ffcb 0%, #4f8cff 100%);
-      color: #222;
-    }
-    .feedback {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      min-height: 1.2em;
-    }
-    .feedback.correto {
-      color: #2ecc40;
-    }
-    .feedback.errado {
-      color: #e74c3c;
-    }
-    @media (max-width: 700px) {
-      .modal { padding: 1rem 0.2rem 1.5rem 0.2rem; }
-      .categoria { padding: 1.2rem 1.2rem; font-size: 1.1rem; }
-      header h1 { font-size: 2rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hora Solution | CRM & Financeiro</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Didático Interativo</h1>
-    <p>Aprenda brincando! Escolha uma categoria para começar:</p>
-  </header>
-  <section class="categorias">
-    <button class="categoria" id="devBtn">Desenvolvimento</button>
-    <button class="categoria" id="bdBtn">Banco de Dados</button>
-    <button class="categoria" id="algBtn">Algoritmo</button>
-    <button class="categoria" id="fisicaBtn">Física</button>
-    <button class="categoria" id="lerBtn">Aprendendo a Ler</button>
-  </section>
-
-  <!-- Modal Desenvolvimento -->
-  <div class="modal-bg" id="modalDev">
-    <div class="modal">
-      <button class="close-btn" onclick="fecharModal('modalDev')">&times;</button>
-      <h2>Atividades de Programação Orientada a Objetos em Java</h2>
-      <div id="atividadesJava"></div>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-icon">
+                    <i data-lucide="zap" style="color: white;"></i>
+                </div>
+                <h1 class="logo-text">HORA Solution</h1>
+            </div>
+            <div class="login-header">
+                <h2>Bem-vindo</h2>
+                <p>Faça login para acessar o painel</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group" style="text-align: left;">
+                    <label>Usuário</label>
+                    <input type="text" id="login-username" class="form-control" required placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label>Senha</label>
+                    <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.875rem; margin-top: 1rem;">
+                    Entrar no Sistema
+                </button>
+            </form>
+            <div class="login-footer">
+                &copy; 2026 Hora Solution - Controle Interno
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- Modal Banco de Dados -->
-  <div class="modal-bg" id="modalBD">
-    <div class="modal">
-      <button class="close-btn" onclick="fecharModal('modalBD')">&times;</button>
-      <h2>Atividades de Banco de Dados</h2>
-      <div id="atividadesBD"></div>
+
+    <div class="app-container" id="app-main" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i data-lucide="zap" style="color: white; width: 20px;"></i>
+                </div>
+                <span class="logo-text">HORA Solution</span>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-view="customers">
+                    <i data-lucide="users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="#" class="nav-item" data-view="billing">
+                    <i data-lucide="credit-card"></i>
+                    <span>Financeiro</span>
+                </a>
+                <a href="#" class="nav-item" data-view="reports">
+                    <i data-lucide="bar-chart-2"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#" class="nav-item" data-view="settings">
+                    <i data-lucide="settings"></i>
+                    <span>Configurações</span>
+                </a>
+                <a href="#" class="nav-item" id="logout-btn" style="margin-top: auto; color: var(--danger);">
+                    <i data-lucide="log-out"></i>
+                    <span>Sair</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h1 id="view-title">Dashboard</h1>
+                    <p id="view-subtitle">Bem-vindo de volta, Marcial!</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" id="add-customer-btn">
+                        <i data-lucide="plus"></i>
+                        <span>Novo Cliente</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic View Container -->
+            <div id="view-container">
+                <!-- Dashboard View (Default) -->
+                <div id="dashboard-view">
+                    <div class="stats-grid">
+                        <div class="card stat-card interactive-card" id="card-active-clients">
+                            <div class="stat-header">
+                                <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--accent);">
+                                    <i data-lucide="users"></i>
+                                </div>
+                                <span class="badge badge-success">+12%</span>
+                            </div>
+                            <div class="stat-value" id="stat-active-clients">0</div>
+                            <div class="stat-label">Clientes Ativos</div>
+                        </div>
+                        <div class="card stat-card interactive-card" id="card-trial-clients">
+                            <div class="stat-header">
+                                <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                                    <i data-lucide="clock"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="stat-trial-clients">0</div>
+                            <div class="stat-label">Em Período de Teste</div>
+                        </div>
+                        <div class="card stat-card interactive-card" id="card-overdue-clients">
+                            <div class="stat-header">
+                                <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                    <i data-lucide="alert-circle"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="stat-overdue-clients">0</div>
+                            <div class="stat-label">Vencimentos Hoje/Atrasados</div>
+                        </div>
+                        <div class="card stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                                    <i data-lucide="dollar-sign"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="stat-monthly-revenue">R$ 0,00</div>
+                            <div class="stat-label">Receita Estimada (Mês)</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="card">
+                            <h3 style="margin-bottom: 1.5rem;">Crescimento de Receita</h3>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="card">
+                            <h3 style="margin-bottom: 1.5rem;">Conversão de Testes</h3>
+                            <canvas id="conversionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customers View (Hidden by default) -->
+                <div id="customers-view" style="display: none;">
+                    <div class="card">
+                        <div class="table-container">
+                            <table id="customers-table">
+                               <thead>
+                                   <tr>
+                                       <th>Cliente</th>
+                                       <th>Status</th>
+                                       <th>Plano</th>
+                                       <th>Vencimento</th>
+                                       <th>Ações</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <!-- Data will be injected here -->
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Billing View -->
+                <div id="billing-view" style="display: none;">
+                    <div class="card">
+                        <div class="table-container">
+                            <table id="billing-table">
+                               <thead>
+                                   <tr>
+                                       <th>Cliente</th>
+                                       <th>Valor</th>
+                                       <th>Data</th>
+                                       <th>Status</th>
+                                       <th>Ações</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <!-- Data will be injected here -->
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports View -->
+                <div id="reports-view" style="display: none;">
+                    <div class="stats-grid" style="margin-bottom: 2rem;">
+                        <div class="card stat-card">
+                            <div class="stat-value" id="report-total-clients">0</div>
+                            <div class="stat-label">Clientes Filtrados</div>
+                        </div>
+                        <div class="card stat-card">
+                            <div class="stat-value" id="report-total-revenue">R$ 0,00</div>
+                            <div class="stat-label">Receita do Filtro</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="grid grid-cols-3 gap-4" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Filtrar por SaaS</label>
+                                <select class="form-control" id="report-filter-saas">
+                                    <!-- Options will be injected -->
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Filtrar por Status</label>
+                                <select class="form-control" id="report-filter-status">
+                                    <option value="all">Todos os Status</option>
+                                    <option value="active">Ativo</option>
+                                    <option value="trial">Em Teste</option>
+                                    <option value="overdue">Atrasado / Pendente</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Buscar Cliente</label>
+                                <input type="text" class="form-control" id="report-filter-search" placeholder="Nome ou e-mail...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-container">
+                            <table id="reports-table">
+                               <thead>
+                                   <tr>
+                                       <th>Cliente</th>
+                                       <th>SaaS</th>
+                                       <th>Status</th>
+                                       <th>Plano</th>
+                                       <th>Início</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <!-- Data will be injected here -->
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="settings-view" style="display: none;">
+                    <div class="card" style="max-width: 600px;">
+                        <h3 style="margin-bottom: 1.5rem;">Configurações do Sistema</h3>
+                        <form id="settings-form">
+                            <div class="form-group">
+                                <label>Chave PIX para Recebimento</label>
+                                <input type="text" class="form-control" id="config-pix-key" required placeholder="Sua chave PIX (E-mail, CPF, CNPJ ou Telefone)">
+                                <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">
+                                    Esta chave será usada para gerar todos os QR Codes de cobrança.
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Nome do Beneficiário</label>
+                                <input type="text" class="form-control" id="config-merchant-name" required placeholder="Seu nome ou nome da empresa">
+                            </div>
+                            <div class="form-group">
+                                <label>Cidade</label>
+                                <input type="text" class="form-control" id="config-merchant-city" required placeholder="Ex: SAO PAULO">
+                            </div>
+                            <div style="margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary">
+                                    <i data-lucide="save"></i>
+                                    Salvar Configurações
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card" style="max-width: 600px; margin-top: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">Gerenciar SaaS Cadastrados</h3>
+                        <div id="saas-management-list" class="saas-list">
+                            <!-- SaaS types with delete buttons will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-  </div>
-  <!-- Modal Algoritmo -->
-  <div class="modal-bg" id="modalAlg">
-    <div class="modal">
-      <button class="close-btn" onclick="fecharModal('modalAlg')">&times;</button>
-      <h2>Atividades de Algoritmo (Portugol Studio)</h2>
-      <div id="atividadesAlg"></div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="customer-modal">
+        <div class="modal">
+            <h2 style="margin-bottom: 1.5rem;">Novo Cliente</h2>
+            <form id="customer-form">
+                <div class="grid grid-cols-2 gap-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Nome do Cliente / Empresa</label>
+                        <input type="text" class="form-control" name="name" required placeholder="Ex: Clínica Sorriso">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" class="form-control" name="email" required placeholder="email@exemplo.com">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <label style="margin-bottom: 0;">SaaS</label>
+                            <button type="button" id="btn-toggle-new-saas" class="btn-text-action">
+                                <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i>
+                                Novo
+                            </button>
+                        </div>
+                        <select class="form-control" name="saasType" id="customer-saas-type">
+                            <!-- Options will be injected by JS -->
+                        </select>
+                    </div>
+                    <div class="form-group" id="new-saas-group" style="display: none;">
+                        <label>Nome do Novo SaaS</label>
+                        <input type="text" class="form-control" id="new-saas-name" placeholder="Ex: Hora Pet">
+                    </div>
+                    <div class="form-group" id="url-group">
+                        <label>URL do Sistema</label>
+                        <input type="text" class="form-control" name="url" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Valor do Plano (R$)</label>
+                        <input type="number" class="form-control" name="planValue" required step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Dia do Vencimento</label>
+                        <input type="number" class="form-control" name="dueDay" required min="1" max="31">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Início do Teste</label>
+                        <input type="date" class="form-control" name="trialStart">
+                    </div>
+                    <div class="form-group">
+                        <label>Fim do Teste</label>
+                        <input type="date" class="form-control" name="trialEnd">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('customer-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Cliente</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
-  <!-- Modal Física -->
-  <div class="modal-bg" id="modalFisica">
-    <div class="modal">
-      <button class="close-btn" onclick="fecharModal('modalFisica')">&times;</button>
-      <h2>Atividades de Física (1º ano do Ensino Médio)</h2>
-      <div id="atividadesFisica"></div>
+
+    <!-- Payment Confirmation Modal -->
+    <div class="modal-overlay" id="payment-modal">
+        <div class="modal" style="max-width: 420px;">
+            <h2 style="margin-bottom: 0.5rem;">Confirmar Pagamento</h2>
+            <p id="payment-client-name" style="color: var(--text-muted); margin-bottom: 1.5rem;"></p>
+            <form id="payment-form">
+                <input type="hidden" id="payment-customer-id">
+                <div class="form-group">
+                    <label>Período pago</label>
+                    <select class="form-control" id="payment-period" required>
+                        <option value="1">1 mês (Mensal)</option>
+                        <option value="3">3 meses (Trimestral)</option>
+                        <option value="6">6 meses (Semestral)</option>
+                        <option value="12">12 meses (Anual)</option>
+                        <option value="custom">Personalizado...</option>
+                    </select>
+                </div>
+                <div class="form-group" id="payment-custom-months-group" style="display: none;">
+                    <label>Quantidade de meses</label>
+                    <input type="number" class="form-control" id="payment-custom-months" min="1" max="120" placeholder="Ex: 4">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Vencimento após confirmação</label>
+                    <div id="payment-preview-date" style="font-weight: 600; font-size: 1.1rem; color: var(--accent);">—</div>
+                    <div id="payment-preview-label" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem;"></div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('payment-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
-  <!-- Modal Aprendendo a Ler -->
-  <div class="modal-bg" id="modalLer">
-    <div class="modal">
-      <button class="close-btn" onclick="fecharModal('modalLer')">&times;</button>
-      <h2>Atividades Lúdicas: Aprendendo a Ler</h2>
-      <div id="atividadesLer"></div>
+
+    <!-- Pix Modal -->
+    <div class="modal-overlay" id="pix-modal">
+        <div class="modal" style="max-width: 450px; text-align: center;">
+            <h2 style="margin-bottom: 0.5rem;">Cobrança PIX</h2>
+            <p id="pix-client-name" style="color: var(--text-muted); margin-bottom: 1.5rem;"></p>
+            
+            <div id="pix-qr-container" style="background: white; padding: 1rem; border-radius: 12px; display: inline-block; margin-bottom: 1.5rem;"></div>
+            
+            <div class="form-group" style="text-align: left;">
+                <label>Código Copia e Cola</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" class="form-control" id="pix-code" readonly>
+                    <button class="btn btn-primary" onclick="copyPixCode()">
+                        <i data-lucide="copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="sendWhatsApp()">
+                    <i data-lucide="message-circle"></i>
+                    Enviar via WhatsApp
+                </button>
+                <button class="btn btn-secondary" style="width: 100%; justify-content: center;" onclick="closeModal('pix-modal')">Fechar</button>
+            </div>
+        </div>
+    </div><!-- End app-main -->
+
+    <!-- Quick Filter Modal -->
+    <div class="modal-overlay" id="quick-filter-modal">
+        <div class="modal" style="max-width: 800px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 id="quick-filter-title">Filtro Rápido</h2>
+                <button class="btn btn-secondary" onclick="closeModal('quick-filter-modal')">Fechar</button>
+            </div>
+            <div class="table-container">
+                <table id="quick-filter-table">
+                   <thead>
+                       <tr>
+                           <th>Cliente</th>
+                           <th>SaaS</th>
+                           <th>Status</th>
+                           <th>Valor</th>
+                           <th>Ações</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <!-- Data will be injected here -->
+                   </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Abrir modais
-    document.getElementById('devBtn').onclick = function() {
-      document.getElementById('modalDev').style.display = 'flex';
-    };
-    document.getElementById('bdBtn').onclick = function() {
-      document.getElementById('modalBD').style.display = 'flex';
-    };
-    document.getElementById('algBtn').onclick = function() {
-      document.getElementById('modalAlg').style.display = 'flex';
-    };
-    document.getElementById('fisicaBtn').onclick = function() {
-      document.getElementById('modalFisica').style.display = 'flex';
-    };
-    document.getElementById('lerBtn').onclick = function() {
-      document.getElementById('modalLer').style.display = 'flex';
-    };
-    // Fechar modal
-    function fecharModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-
-    // Atividades Java
-    const atividadesJava = [
-      {
-        titulo: '1. Soma de dois números',
-        descricao: 'Implemente um método <code>somar</code> que recebe dois inteiros e retorna a soma.',
-        regex: [/int\s+somar\s*\(/, /return\s+.*\+/],
-        dica: 'O método deve receber dois parâmetros inteiros e retornar a soma usando o operador +. Exemplo: return a + b;'
-      },
-      {
-        titulo: '2. Encontrar o maior valor em um array',
-        descricao: 'Implemente um método <code>maiorValor</code> que recebe um array de inteiros e retorna o maior valor.',
-        regex: [/int\s+maiorValor\s*\(/, /for|while/, /if\s*\(/, /return/],
-        dica: 'Percorra o array usando um laço (for ou while), compare cada elemento e retorne o maior valor encontrado.'
-      },
-      {
-        titulo: '3. Contar vogais em uma String',
-        descricao: 'Crie um método <code>contarVogais</code> que recebe uma <code>String</code> e retorna o número de vogais.',
-        regex: [/int\s+contarVogais\s*\(/, /for|while/, /charAt|toCharArray/, /if.*[aeiou]/i],
-        dica: 'Percorra cada caractere da string, verifique se é uma vogal (a, e, i, o, u) e incremente um contador.'
-      },
-      {
-        titulo: '4. Inverter uma lista de inteiros',
-        descricao: 'Implemente um método <code>inverterLista</code> que recebe uma <code>List<Integer></code> e retorna a lista invertida.',
-        regex: [/List<Integer>\s+inverterLista\s*\(/, /Collections\.reverse|for|add\(0,/],
-        dica: 'Você pode usar Collections.reverse(lista) ou criar uma nova lista e adicionar os elementos no início.'
-      },
-      {
-        titulo: '5. Ler arquivo texto',
-        descricao: 'Crie um método que lê um arquivo texto e retorna seu conteúdo como <code>String</code>.',
-        regex: [/BufferedReader|Files\.readAllLines|Scanner/, /FileReader|Paths/],
-        dica: 'Utilize BufferedReader, Scanner ou Files.readAllLines para ler o conteúdo do arquivo.'
-      },
-      {
-        titulo: '6. Tratar exceções',
-        descricao: 'Implemente um método que divide dois números e trata a exceção de divisão por zero.',
-        regex: [/try\s*\{/, /catch\s*\(ArithmeticException/],
-        dica: 'Envolva a divisão em um bloco try-catch e capture ArithmeticException para evitar erro de divisão por zero.'
-      },
-      {
-        titulo: '7. Usar lambda para filtrar lista',
-        descricao: 'Utilize expressão lambda para filtrar números pares de uma lista de inteiros.',
-        regex: [/stream\(\)/, /filter\(/, /lambda|->/],
-        dica: 'Use .stream().filter(n -> n % 2 == 0) para obter apenas os números pares.'
-      },
-      {
-        titulo: '8. Implementar interface',
-        descricao: 'Implemente a interface <code>Calculavel</code> com o método <code>calcular()</code>.',
-        regex: [/implements\s+Calculavel/, /public\s+double\s+calcular\s*\(/],
-        dica: 'Implemente todos os métodos da interface Calculavel, especialmente o calcular().' 
-      },
-      {
-        titulo: '9. Usar enum para dias da semana',
-        descricao: 'Crie um <code>enum</code> chamado <code>DiaSemana</code> com os dias da semana.',
-        regex: [/enum\s+DiaSemana/, /SEGUNDA|TERCA|QUARTA|QUINTA|SEXTA|SABADO|DOMINGO/],
-        dica: 'Enum é uma lista de constantes. Exemplo: enum DiaSemana { SEGUNDA, TERCA, ... }'
-      },
-      {
-        titulo: '10. Teste unitário com JUnit',
-        descricao: 'Escreva um teste JUnit para o método <code>somar</code> que verifica se 2 + 3 = 5.',
-        regex: [/import\s+org\.junit/, /@Test/, /assertEquals\s*\(\s*5\s*,\s*.*somar/],
-        dica: 'Use @Test e assertEquals(5, somar(2, 3)) para validar o resultado.'
-      },
-      {
-        titulo: '11. Converter lista para mapa',
-        descricao: 'Implemente um método que converte uma <code>List&lt;String&gt;</code> em um <code>Map&lt;String, Integer&gt;</code> com o tamanho de cada string.',
-        regex: [/Map<String,\s*Integer>/, /for|stream/, /put|collect/],
-        dica: 'Percorra a lista e adicione cada string como chave e seu tamanho como valor no mapa.'
-      },
-      {
-        titulo: '12. Ordenar objetos por atributo',
-        descricao: 'Implemente a ordenação de uma lista de objetos <code>Aluno</code> pelo atributo <code>nome</code>.',
-        regex: [/Collections\.sort|stream\(\)\.sorted/, /Comparator|compareTo/],
-        dica: 'Implemente Comparable<Aluno> ou use Comparator.comparing(Aluno::getNome).'
-      },
-      {
-        titulo: '13. Serializar objeto para JSON',
-        descricao: 'Utilize uma biblioteca (ex: Gson ou Jackson) para converter um objeto em JSON.',
-        regex: [/Gson|ObjectMapper/, /toJson/],
-        dica: 'Use Gson().toJson(obj) ou ObjectMapper.writeValueAsString(obj).'
-      },
-      {
-        titulo: '14. Buscar elemento em matriz',
-        descricao: 'Implemente um método que busca um valor em uma matriz de inteiros.',
-        regex: [/for|while/, /\[\]/, /return/],
-        dica: 'Use dois laços (um para linhas e outro para colunas) para percorrer a matriz.'
-      },
-      {
-        titulo: '15. Calcular média de notas',
-        descricao: 'Crie um método que recebe um array de doubles e retorna a média.',
-        regex: [/double\s+media\s*\(/, /for|stream/, /return/],
-        dica: 'Some todos os valores do array e divida pelo total de elementos.'
-      },
-      {
-        titulo: '16. Validar CPF',
-        descricao: 'Implemente um método que valida um CPF (formato e dígitos).',
-        regex: [/String\s+cpf/, /return/, /if/],
-        dica: 'Verifique se o CPF tem 11 dígitos e se os dígitos verificadores estão corretos.'
-      },
-      {
-        titulo: '17. Gerar números aleatórios',
-        descricao: 'Crie um método que retorna uma lista com 10 números aleatórios entre 1 e 100.',
-        regex: [/Random|ThreadLocalRandom/, /for/, /add/],
-        dica: 'Use Random ou ThreadLocalRandom para gerar números e adicione-os em uma lista.'
-      },
-      {
-        titulo: '18. Remover duplicatas de lista',
-        descricao: 'Implemente um método que remove elementos duplicados de uma lista de inteiros.',
-        regex: [/Set|HashSet/, /addAll|stream\(\)\.distinct/],
-        dica: 'Converta a lista para um Set ou use .stream().distinct().' 
-      },
-      {
-        titulo: '19. Calcular fatorial recursivo',
-        descricao: 'Implemente um método recursivo para calcular o fatorial de um número.',
-        regex: [/int\s+fatorial\s*\(/, /return/, /fatorial\s*\(/],
-        dica: 'O método deve chamar a si mesmo até chegar ao caso base (n == 0 ou n == 1).'
-      },
-      {
-        titulo: '20. Verificar palíndromo',
-        descricao: 'Crie um método que verifica se uma string é palíndromo.',
-        regex: [/String/, /equals|==/, /reverse|charAt/],
-        dica: 'Compare a string original com ela invertida para saber se é palíndromo.'
-      }
-    ];
-
-    // Atividades Banco de Dados
-    const atividadesBD = [
-      {
-        titulo: '1. Criação de Tabela',
-        descricao: 'Escreva um comando SQL para criar uma tabela <code>Clientes</code> com os campos <code>id</code> (inteiro, chave primária), <code>nome</code> (texto) e <code>email</code> (texto).',
-        regex: [/CREATE\s+TABLE/i, /Clientes/i, /id\s+INT/i, /PRIMARY\s+KEY/i, /nome\s+TEXT/i, /email\s+TEXT/i],
-        dica: 'Use CREATE TABLE Clientes (id INT PRIMARY KEY, nome TEXT, email TEXT); Certifique-se de definir o id como chave primária.'
-      },
-      {
-        titulo: '2. Inserção de Dados',
-        descricao: 'Insira um cliente chamado "João" com email "joao@email.com" na tabela <code>Clientes</code>.',
-        regex: [/INSERT\s+INTO/i, /Clientes/i, /João/i, /joao@email.com/i],
-        dica: 'Use INSERT INTO Clientes (nome, email) VALUES ("João", "joao@email.com"); Lembre-se de usar os valores corretos.'
-      },
-      {
-        titulo: '3. Consulta Simples',
-        descricao: 'Escreva um comando SQL para selecionar todos os clientes da tabela <code>Clientes</code>.',
-        regex: [/SELECT\s+\*/i, /FROM\s+Clientes/i],
-        dica: 'Use SELECT * FROM Clientes; para buscar todos os registros.'
-      },
-      {
-        titulo: '4. Atualização de Dados',
-        descricao: 'Atualize o email do cliente com <code>id = 1</code> para "novo@email.com".',
-        regex: [/UPDATE/i, /Clientes/i, /SET/i, /email/i, /WHERE/i, /id\s*=\s*1/i],
-        dica: 'Use UPDATE Clientes SET email = "novo@email.com" WHERE id = 1; Atenção ao uso do WHERE.'
-      },
-      {
-        titulo: '5. Exclusão de Dados',
-        descricao: 'Remova o cliente com <code>id = 1</code> da tabela <code>Clientes</code>.',
-        regex: [/DELETE\s+FROM/i, /Clientes/i, /WHERE/i, /id\s*=\s*1/i],
-        dica: 'Use DELETE FROM Clientes WHERE id = 1; Não esqueça do WHERE para evitar apagar todos os registros.'
-      },
-      {
-        titulo: '6. Chave Estrangeira',
-        descricao: 'Adicione uma chave estrangeira <code>cliente_id</code> na tabela <code>Pedidos</code> referenciando <code>Clientes(id)</code>.',
-        regex: [/FOREIGN\s+KEY/i, /cliente_id/i, /REFERENCES/i, /Clientes\s*\(id\)/i],
-        dica: 'Use FOREIGN KEY (cliente_id) REFERENCES Clientes(id); para criar o relacionamento.'
-      },
-      {
-        titulo: '7. Consulta com JOIN',
-        descricao: 'Escreva um comando SQL para listar todos os pedidos com o nome do cliente.',
-        regex: [/SELECT/i, /JOIN/i, /Pedidos/i, /Clientes/i],
-        dica: 'Use SELECT ... FROM Pedidos JOIN Clientes ON ... para unir as tabelas e trazer o nome do cliente.'
-      },
-      {
-        titulo: '8. Agrupamento de Dados',
-        descricao: 'Liste a quantidade de pedidos por cliente.',
-        regex: [/SELECT/i, /COUNT/i, /GROUP\s+BY/i],
-        dica: 'Use SELECT cliente_id, COUNT(*) FROM Pedidos GROUP BY cliente_id; para agrupar os resultados.'
-      },
-      {
-        titulo: '9. Consulta com WHERE',
-        descricao: 'Selecione todos os clientes cujo nome começa com "A".',
-        regex: [/SELECT/i, /FROM/i, /Clientes/i, /WHERE/i, /nome/i, /LIKE/i],
-        dica: 'Use WHERE nome LIKE "A%" para filtrar nomes que começam com A.'
-      },
-      {
-        titulo: '10. Criação de View',
-        descricao: 'Crie uma <code>VIEW</code> chamada <code>ClientesAtivos</code> que mostra apenas clientes com pedidos.',
-        regex: [/CREATE\s+VIEW/i, /ClientesAtivos/i],
-        dica: 'Use CREATE VIEW ClientesAtivos AS SELECT ... para criar uma visão filtrada.'
-      }
-    ];
-
-    // Atividades Algoritmo (Portugol Studio)
-    const atividadesAlg = [
-      {
-        titulo: '1. Soma de dois números',
-        descricao: 'Escreva um algoritmo em Portugol Studio que leia dois números e exiba a soma.',
-        regex: [/leia/i, /escreva/i, /\+/],
-        dica: 'Use leia para receber os números e escreva para mostrar a soma. Exemplo: escreva(a + b);'
-      },
-      {
-        titulo: '2. Verificação de número par',
-        descricao: 'Crie um algoritmo que leia um número e informe se ele é par ou ímpar.',
-        regex: [/leia/i, /mod/i, /se/i, /entao/i],
-        dica: 'Use o operador mod para verificar se o número é divisível por 2. Exemplo: se (n mod 2 = 0) então ...'
-      },
-      {
-        titulo: '3. Fatorial de um número',
-        descricao: 'Implemente um algoritmo que calcule o fatorial de um número informado.',
-        regex: [/leia/i, /para/i, /fatorial/i],
-        dica: 'Use um laço para multiplicar os valores de 1 até o número informado.'
-      },
-      {
-        titulo: '4. Média de notas',
-        descricao: 'Escreva um algoritmo que leia 3 notas e calcule a média.',
-        regex: [/leia/i, /media/i, /escreva/i],
-        dica: 'Some as notas e divida por 3 para obter a média. Use escreva para mostrar o resultado.'
-      },
-      {
-        titulo: '5. Tabuada',
-        descricao: 'Crie um algoritmo que exiba a tabuada de um número.',
-        regex: [/leia/i, /para/i, /escreva/i],
-        dica: 'Use um laço para multiplicar o número de 1 a 10 e escreva cada resultado.'
-      },
-      {
-        titulo: '6. Maior de dois números',
-        descricao: 'Implemente um algoritmo que leia dois números e mostre o maior.',
-        regex: [/leia/i, /se/i, /escreva/i],
-        dica: 'Use a estrutura se ... então ... senão ... para comparar os dois números.'
-      },
-      {
-        titulo: '7. Contagem regressiva',
-        descricao: 'Escreva um algoritmo que faça uma contagem regressiva de 10 até 1.',
-        regex: [/para/i, /de/i, /ate/i, /passo/i],
-        dica: 'Use para de 10 até 1 passo -1 para fazer a contagem regressiva.'
-      },
-      {
-        titulo: '8. Verificação de idade',
-        descricao: 'Crie um algoritmo que leia a idade e informe se é maior de idade.',
-        regex: [/leia/i, /se/i, /escreva/i],
-        dica: 'Se a idade for maior ou igual a 18, escreva que é maior de idade, senão escreva que é menor.'
-      },
-      {
-        titulo: '9. Soma dos elementos de um vetor',
-        descricao: 'Implemente um algoritmo que leia 5 números em um vetor e calcule a soma.',
-        regex: [/vetor/i, /leia/i, /para/i, /soma/i],
-        dica: 'Use um vetor para armazenar os números e um laço para somar todos eles.'
-      },
-      {
-        titulo: '10. Cálculo de IMC',
-        descricao: 'Escreva um algoritmo que leia peso e altura e calcule o IMC.',
-        regex: [/leia/i, /imc/i, /escreva/i],
-        dica: 'IMC = peso / (altura * altura). Mostre o resultado usando escreva.'
-      }
-    ];
-
-    // Atividades Física
-    const atividadesFisica = [
-      {
-        titulo: '1. Velocidade Média',
-        descricao: 'Calcule a velocidade média de um corpo que percorre 150 metros em 30 segundos.',
-        regex: [/velocidade.*=/i, /150/i, /30/i, /5/],
-        dica: 'A velocidade média é calculada por Vm = ΔS/Δt. Divida 150 por 30 para encontrar o resultado.'
-      },
-      {
-        titulo: '2. Conversão de Unidades',
-        descricao: 'Converta 72 km/h para m/s.',
-        regex: [/72/i, /3,?6/i, /20/],
-        dica: 'Para converter km/h para m/s, divida por 3,6. 72 / 3,6 = 20 m/s.'
-      },
-      {
-        titulo: '3. Movimento Retilíneo Uniforme (MRU)',
-        descricao: 'Escreva a equação horária do espaço para um corpo que parte do repouso com velocidade de 10 m/s.',
-        regex: [/S\s*=\s*S0\s*\+\s*V\s*\.\s*t/i, /10/i],
-        dica: 'A equação é S = S0 + V·t. Como parte do repouso, S0 pode ser 0 e V = 10 m/s.'
-      },
-      {
-        titulo: '4. Força Peso',
-        descricao: 'Calcule o peso de um corpo de 50 kg na Terra (g = 10 m/s²).',
-        regex: [/peso.*=/i, /50/i, /10/i, /500/],
-        dica: 'Peso = massa × gravidade. 50 × 10 = 500 N.'
-      },
-      {
-        titulo: '5. Primeira Lei de Newton',
-        descricao: 'Explique a Primeira Lei de Newton com suas palavras.',
-        regex: [/inércia/i, /repouso|movimento/i],
-        dica: 'A Primeira Lei de Newton é a Lei da Inércia: um corpo tende a permanecer em repouso ou em movimento retilíneo uniforme, a menos que uma força atue sobre ele.'
-      },
-      {
-        titulo: '6. Trabalho de uma força',
-        descricao: 'Calcule o trabalho realizado por uma força de 20 N que desloca um objeto por 3 metros na mesma direção.',
-        regex: [/trabalho.*=/i, /20/i, /3/i, /60/],
-        dica: 'Trabalho = força × deslocamento. 20 × 3 = 60 J.'
-      },
-      {
-        titulo: '7. Energia Cinética',
-        descricao: 'Calcule a energia cinética de um corpo de 2 kg a 5 m/s.',
-        regex: [/energia.*cinética.*=/i, /2/i, /5/i, /25/],
-        dica: 'Ec = (m·v²)/2. 2 × 25 / 2 = 25 J.'
-      },
-      {
-        titulo: '8. Diferença entre massa e peso',
-        descricao: 'Explique a diferença entre massa e peso.',
-        regex: [/massa/i, /peso/i, /gravidade/i],
-        dica: 'Massa é a quantidade de matéria de um corpo (não muda com o local). Peso é a força com que a gravidade atrai o corpo.'
-      },
-      {
-        titulo: '9. Densidade',
-        descricao: 'Calcule a densidade de um corpo de 200 g e volume de 50 cm³.',
-        regex: [/densidade.*=/i, /200/i, /50/i, /4/],
-        dica: 'Densidade = massa/volume. 200/50 = 4 g/cm³.'
-      },
-      {
-        titulo: '10. Pressão',
-        descricao: 'Calcule a pressão exercida por uma força de 100 N sobre uma área de 2 m².',
-        regex: [/pressão.*=/i, /100/i, /2/i, /50/],
-        dica: 'Pressão = força/área. 100/2 = 50 Pa.'
-      }
-    ];
-
-    // Atividades Aprendendo a Ler
-    const atividadesLer = [
-      {
-        titulo: '1. Identifique a Letra',
-        descricao: 'Qual letra está sendo mostrada na imagem abaixo?',
-        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Letter_A.svg/1200px-Letter_A.svg.png" alt="Letra A" style="width:80px;">',
-        regex: [/a/i],
-        dica: 'Esta é a letra A. Escreva a letra correspondente à imagem.'
-      },
-      {
-        titulo: '2. Ouça e Escreva',
-        descricao: 'Ouça o som e escreva a letra que você ouviu.',
-        midia: '<audio controls><source src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae5e2.mp3" type="audio/mpeg">Seu navegador não suporta áudio.</audio>',
-        regex: [/e/i],
-        dica: 'O som é da letra E. Escreva a letra que você ouviu.'
-      },
-      {
-        titulo: '3. Complete a Palavra',
-        descricao: 'Veja a imagem e complete a palavra: <b>C_SA</b>',
-        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Casa.jpg" alt="Casa" style="width:100px;">',
-        regex: [/a/i],
-        dica: 'A imagem é de uma casa. Complete com a letra A.'
-      },
-      {
-        titulo: '4. Jogo da Memória: Letras',
-        descricao: 'Clique no botão para jogar um mini game de memória com letras.',
-        midia: '<button onclick="abrirJogoMemoria()" class="verificar-btn">Jogar</button><div id="gameMemoria"></div>',
-        regex: [/ok/i],
-        dica: 'Após jogar, digite OK para marcar como concluído.'
-      },
-      {
-        titulo: '5. Vídeo: Aprendendo as Vogais',
-        descricao: 'Assista ao vídeo e escreva o nome de uma vogal que você aprendeu.',
-        midia: '<iframe width="220" height="124" src="https://www.youtube.com/embed/1a1cKQH2Y6I" title="Vogais" frameborder="0" allowfullscreen></iframe>',
-        regex: [/a|e|i|o|u/i],
-        dica: 'Digite uma das vogais: A, E, I, O ou U.'
-      },
-      {
-        titulo: '6. Associe Imagem e Palavra',
-        descricao: 'Qual palavra corresponde à imagem abaixo?',
-        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Banana.png" alt="Banana" style="width:100px;">',
-        regex: [/banana/i],
-        dica: 'A imagem é de uma banana. Escreva a palavra correta.'
-      },
-      {
-        titulo: '7. Forme a Palavra',
-        descricao: 'Arraste as letras para formar a palavra da imagem (simulação, digite a palavra formada).',
-        midia: '<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Bola.png" alt="Bola" style="width:80px;">',
-        regex: [/bola/i],
-        dica: 'A imagem é de uma bola. Forme a palavra BOLA.'
-      },
-      {
-        titulo: '8. Rima Divertida',
-        descricao: 'Qual palavra rima com "pato"? (Dica: animal que mia)',
-        midia: '',
-        regex: [/gato/i],
-        dica: 'A palavra que rima com pato e é um animal que mia é GATO.'
-      },
-      {
-        titulo: '9. Complete a frase',
-        descricao: 'Complete: "O sol é ___." (cor amarela)',
-        midia: '',
-        regex: [/amarelo|amarela/i],
-        dica: 'O sol é amarelo.'
-      },
-      {
-        titulo: '10. Jogo: Clique na vogal',
-        descricao: 'Clique no botão para jogar um mini game de clicar nas vogais (simulação, digite a vogal que aparecer).',
-        midia: '<button onclick="abrirJogoVogal()" class="verificar-btn">Jogar</button><div id="gameVogal"></div>',
-        regex: [/a|e|i|o|u/i],
-        dica: 'Digite a vogal que aparecer no mini game.'
-      }
-    ];
-
-    // Renderização dinâmica das atividades
-    function renderAtividades(lista, containerId, tipo) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = '';
-      lista.forEach((atv, idx) => {
-        const num = idx + 1;
-        const atividadeDiv = document.createElement('div');
-        atividadeDiv.className = 'atividade';
-        atividadeDiv.innerHTML = `
-          <div class="atividade-header" onclick="toggleAtividade(this.parentNode)">
-            <span class="seta">▶</span> ${num}. ${atv.titulo}
-          </div>
-          <div class="atividade-content">
-            <p>${atv.descricao}</p>
-            <textarea id="codigo${tipo}${num}" placeholder="Digite sua resposta..."></textarea>
-            <button class="verificar-btn" onclick="verificarCodigo('${tipo}', ${num})">Verificar</button>
-            <div class="feedback" id="feedback${tipo}${num}"></div>
-          </div>
-        `;
-        container.appendChild(atividadeDiv);
-      });
-    }
-    // Renderizar ao carregar
-    renderAtividades(atividadesJava, 'atividadesJava', 'Java');
-    renderAtividades(atividadesBD, 'atividadesBD', 'BD');
-    renderAtividades(atividadesAlg, 'atividadesAlg', 'Alg');
-    renderAtividades(atividadesFisica, 'atividadesFisica', 'Fisica');
-    renderAtividades(atividadesLer, 'atividadesLer', 'Ler');
-
-    // Verificação de código
-    function verificarCodigo(tipo, num) {
-      let lista, prefix;
-      if(tipo === 'Java') { lista = atividadesJava; prefix = 'Java'; }
-      else if(tipo === 'BD') { lista = atividadesBD; prefix = 'BD'; }
-      else if(tipo === 'Alg') { lista = atividadesAlg; prefix = 'Alg'; }
-      else if(tipo === 'Fisica') { lista = atividadesFisica; prefix = 'Fisica'; }
-      else { lista = atividadesLer; prefix = 'Ler'; }
-      const codigo = document.getElementById('codigo'+prefix+num).value;
-      let feedback = '';
-      let correto = true;
-      lista[num-1].regex.forEach(rgx => { if(!rgx.test(codigo)) correto = false; });
-      if(correto) {
-        feedback = '<span class="correto">Parabéns! Sua resposta está correta.</span>';
-      } else {
-        feedback = `<span class='errado'>${lista[num-1].dica}</span>`;
-      }
-      document.getElementById('feedback'+prefix+num).innerHTML = feedback;
-    }
-
-    // Expansão/colapso das atividades (accordion)
-    function toggleAtividade(atividadeDiv) {
-      atividadeDiv.classList.toggle('expanded');
-    }
-
-    // Jogos simples para atividades lúdicas
-    function abrirJogoMemoria() {
-      document.getElementById('gameMemoria').innerHTML = '<span style="color:#4f8cff;font-weight:bold;">Parabéns! Você encontrou todos os pares de letras!</span>';
-    }
-    function abrirJogoVogal() {
-      const vogais = ['A','E','I','O','U'];
-      const sorteada = vogais[Math.floor(Math.random()*vogais.length)];
-      document.getElementById('gameVogal').innerHTML = `<span style='color:#4f8cff;font-weight:bold;'>Cliquei na vogal: <b>${sorteada}</b></span>`;
-    }
-  </script>
+    <script src="js/utils.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
 </body>
 </html>
